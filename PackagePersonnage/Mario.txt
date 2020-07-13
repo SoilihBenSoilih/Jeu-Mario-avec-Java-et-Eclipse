@@ -1,0 +1,167 @@
+package PackagePersonnage;
+
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
+
+import PackageObjets.Objet;
+import PackageObjets.Piece;
+import PanthreNoirePackage.ClassePrincipale;
+
+public class Mario extends Personnage{
+	
+	//Variables
+	
+	private ImageIcon IcoMario;
+	private Image imgMario;
+	private boolean saut; //vrai si Mario saute
+	private int compteurSaut; //durée et hauteur du saut
+	private int compteurMort;
+
+	public Mario(int x, int y) {
+		super(x, y, 28, 50);
+		this.IcoMario = new ImageIcon(getClass().getResource("/pictures/marioMarcheDroite.png"));
+		this.imgMario = this.IcoMario.getImage();
+		
+		this.saut=false;
+		this.compteurSaut = 0;
+		this.compteurMort = 0;
+	}
+
+	//getters et setters
+
+	public ImageIcon getIcoMario() {return IcoMario;}
+	public void setIcoMario(ImageIcon icoMario) {IcoMario = icoMario;}
+	public Image getImgMario() {return imgMario;}
+	public void setImgMario(Image imgMario) {this.imgMario = imgMario;}
+	public boolean isSaut() {return saut;}
+	public void setSaut(boolean saut) {this.saut = saut;}
+	
+	//***Redefinition de la méthode marche
+	
+	public Image marche(String nom, int frequence_des_pas) {
+		String str;
+		ImageIcon ico;
+		Image img;
+		
+		if(this.personnage_en_marche == false || ClassePrincipale.scene.getXposition() <= 0 || ClassePrincipale.scene.getXposition() > 4430) {
+			if(this.personnage_tournE_vers_la_droite == true) {str = "/pictures/" + nom + "ArretDroite.png";}
+			else {str = "/pictures/" + nom + "ArretGauche.png";}}
+		
+		else  {
+			this.compteur_des_pas++;
+			if (this.compteur_des_pas / frequence_des_pas == 0) {
+				if(this.personnage_tournE_vers_la_droite == true) { str= "/pictures/" + nom + "ArretDroite.png";}
+				else str = "/pictures/" + nom + "ArretGauche.png";
+			}
+			else {
+				if(this.personnage_tournE_vers_la_droite == true) { str= "/pictures/" + nom + "MarcheDroite.png";}
+				else str = "/pictures/" + nom + "MarcheGauche.png";}
+			if(this.compteur_des_pas == 2 * frequence_des_pas) {this.compteur_des_pas = 0;}
+		}
+		
+		//Affichage de l'image du personnage
+		
+		ico = new ImageIcon(getClass().getResource(str));
+		img = ico.getImage();
+		return img;
+		
+	}
+	
+	//***Méthodes saut***//
+	
+	public Image sauter() {
+		
+		ImageIcon ico;
+		Image img;
+		String str;
+		
+		this.compteurSaut++;
+		
+		//montée
+		if(this.compteurSaut <= 40) {
+			if(this.getY() > ClassePrincipale.scene.getHauteurPlafond()) {this.setY(this.getY() - 4);}
+			else {this.compteurSaut=41;}
+			if(this.isPersonnage_tournE_vers_la_droite() == true) {str="/pictures/marioSautDroite.png";}
+			else {str="/pictures/marioSautGauche.png";}
+			
+		//retombée
+		}else if (this.getY() + this.getHauteur() < ClassePrincipale.scene.getYsol()) {this.setY(this.getY() + 1);
+		if(this.isPersonnage_tournE_vers_la_droite() == true) {str="/pictures/marioSautDroite.png";}
+		else {str="/pictures/marioSautGauche.png";}
+		
+		}
+		//Quand le saut est terminé
+		else {
+	    	if(this.isPersonnage_tournE_vers_la_droite() == true) {str="/pictures/marioArretDroite.png";}
+			else {str="/pictures/marioArretGauche.png";}
+	    	this.saut = false;
+	    	this.compteurSaut = 0;
+	    	
+	    }
+	    
+		//affichage de l'image
+	    ico = new ImageIcon(getClass().getResource(str));
+	    img = ico.getImage();
+	    return img;
+	}
+	
+	public void contact(Objet objet) {
+		
+		//contact horizontal
+		if( (super.contactAvant(objet) == true && this.isPersonnage_tournE_vers_la_droite() == true)
+			||(super.contactArriere(objet) == true && this.isPersonnage_tournE_vers_la_droite() == false)){
+			ClassePrincipale.scene.setDx(0);
+			this.setPersonnage_en_marche(false);
+		}
+		//contact avec un objet en dessous
+		if(super.contactDessous(objet) == true && this.saut == true) {//Mario saute sur un objet
+			ClassePrincipale.scene.setYsol(objet.getY());	
+		} else if(super.contactDessous(objet) == false) { //mario tombe sur le sol
+		   ClassePrincipale.scene.setYsol(293); //hauteur initiale du sol
+		   if(this.saut == false) {this.setY(243);} //altirude initiale de Mario}
+		} 
+		
+		//contact avec un objet en dessus
+		
+		if(super.contactDessus(objet) == true) {
+			ClassePrincipale.scene.setHauteurPlafond(objet.getY() + objet.getHauteur());//le plafond devient le dessous de l'objet
+		} else if(super.contactDessus(objet) == false && this.saut == false) {
+			ClassePrincipale.scene.setHauteurPlafond(0);
+		}
+	}
+	
+	public boolean ContactPiece(Piece piece) {
+		if(this.contactAvant(piece)==true || this.contactArriere(piece)==true
+		   || this.contactDessus(piece)==true || this.contactDessous(piece)==true) {return true;}
+		else return false;
+	}
+	
+	
+	public void contact(Personnage personnage) {
+		if( (super.contactAvant(personnage) == true) || (super.contactArriere(personnage) == true) ) {
+			this.setPersonnage_en_marche(false);
+			this.setVivant(false);
+		} else if(super.contactDessous(personnage) == true) {
+			personnage.setPersonnage_en_marche(false);
+			personnage.setVivant(false);
+		}
+	}
+	
+	public Image meurt() {
+		String str;
+		ImageIcon Ico;
+		Image Img;
+		
+		str="/pictures/boom.png";
+		this.compteurMort++;
+		if(this.compteurMort > 100) {
+			str="/pictures/marioMeurt.png";
+			this.setY(this.getY() -1);
+		}
+		Ico= new ImageIcon(getClass().getResource(str));
+		Img= Ico.getImage();
+		return Img;
+	}
+}
+	

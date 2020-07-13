@@ -1,0 +1,482 @@
+package PanthreNoirePackage;
+
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+
+import PackageAffichage.CompteARebours;
+import PackageAffichage.Score;
+import PackageObjets.Bloc;
+import PackageObjets.Objet;
+import PackageObjets.Piece;
+import PackageObjets.Tuyau;
+import PackagePersonnage.Champignon;
+import PackagePersonnage.Mario;
+import PackagePersonnage.Tortue;
+
+@SuppressWarnings("serial")
+public class Scene extends JPanel {
+
+	// Création des attributs
+
+	private ImageIcon icofond;
+	private Image imgFond1;
+	private Image imgFond2;
+
+	private int xfond1;
+	private int xfond2;
+	private int dx;
+	private int xposition;
+	private int ysol; //hauteur courante du sol
+	private int hauteurPlafond; //hauteur courante du plafond 
+	
+
+	private ImageIcon icoChateau1;
+	private Image imgChateau1;
+
+	private ImageIcon icoDepart;
+	private Image imgDepart;
+	
+	private Mario mario_la_panthère;
+	private Score score;
+	private Font police;
+	private CompteARebours compte;
+	
+	private Tuyau tuyau1;
+	private Tuyau tuyau2;
+	private Tuyau tuyau3;
+	private Tuyau tuyau4;
+	private Tuyau tuyau5;
+	private Tuyau tuyau6;
+	private Tuyau tuyau7;
+	private Tuyau tuyau8;
+	
+	private Bloc bloc1;
+	private Bloc bloc2;
+	private Bloc bloc3;
+	private Bloc bloc4;
+	private Bloc bloc5;
+	private Bloc bloc6;
+	private Bloc bloc7;
+	private Bloc bloc8;
+	private Bloc bloc9;
+	private Bloc bloc10;
+	private Bloc bloc11;
+	private Bloc bloc12;
+	
+	public Piece piece1;
+	public Piece piece2;
+	public Piece piece3;
+	public Piece piece4;
+	public Piece piece5;
+	public Piece piece6;
+	public Piece piece7;
+	public Piece piece8;
+	public Piece piece9;
+	public Piece piece10;
+	
+	private Champignon champ1;
+	private Champignon champ2;
+	private Champignon champ3;
+	private Champignon champ4;
+	private Champignon champ5;
+	private Champignon champ6;
+	private Champignon champ7;
+	private Champignon champ8;
+	
+	private Tortue tortue1;
+	private Tortue tortue2;
+	private Tortue tortue3;
+	private Tortue tortue4;
+	private Tortue tortue5;
+	private Tortue tortue6;
+	private Tortue tortue7;
+	private Tortue tortue8;
+	private Tortue tortue9;
+	
+	private ImageIcon icoDrapeaufin;
+	private Image imgDrapeaufin;
+	private ImageIcon icoChateauFin;
+	private Image imgChateauFin;
+	
+	private ArrayList<Objet> Tableaux_des_objets;
+	private ArrayList<Piece> Tableaux_des_pieces;
+	private ArrayList<Tortue> TabTortues;
+	private ArrayList<Champignon> TabChamps;
+
+	// Constructeur
+
+	public Scene() {
+		super();
+		this.xfond1 = -50;
+		this.xfond2 = 750;
+		this.dx = 0;
+		this.xposition = -1;
+		this.ysol = 293;
+		this.hauteurPlafond = 0;
+
+		// association avec les images du dossier
+		icofond = new ImageIcon(getClass().getResource("/pictures/fondEcran.png"));
+		this.imgFond1 = this.icofond.getImage();
+		this.imgFond2 = this.icofond.getImage();
+
+		icoChateau1 = new ImageIcon(getClass().getResource("/pictures/chateau1.png"));
+		this.imgChateau1 = this.icoChateau1.getImage();
+		icoDepart = new ImageIcon(getClass().getResource("/pictures/depart.png"));
+		this.imgDepart = this.icoDepart.getImage();
+		
+		//instances des objets
+		mario_la_panthère=new Mario(300,245);
+		
+		tuyau1=new Tuyau(600,230);
+		tuyau2=new Tuyau(1000,230);
+		tuyau3=new Tuyau(1600,230);
+		tuyau4=new Tuyau(1900,230);
+		tuyau5=new Tuyau(2500,230);
+		tuyau6=new Tuyau(3000,230);
+		tuyau7=new Tuyau(3800,230);
+		tuyau8=new Tuyau(4500,230);
+		
+		bloc1=new Bloc(400,180);
+		bloc2=new Bloc(1200,180);
+		bloc3=new Bloc(1270,170);
+		bloc4=new Bloc(1340,160);
+		bloc5=new Bloc(2000,180);
+		bloc6=new Bloc(2600,170);
+		bloc7=new Bloc(2650,180);
+		bloc8=new Bloc(3500,160);
+		bloc9=new Bloc(3550,140);
+		bloc10=new Bloc(4000,170);
+		bloc11=new Bloc(4200,200);
+		bloc12=new Bloc(4300,210);
+		
+		piece1=new Piece(402,145);
+		piece2=new Piece(1202,140);
+		piece3=new Piece(1272,95);
+		piece4=new Piece(1342,40);
+		piece5=new Piece(1650,145);
+		piece6=new Piece(2650,145);
+		piece7=new Piece(3000,135);
+		piece8=new Piece(3400,125);
+		piece9=new Piece(4200,145);
+		piece10=new Piece(4600,40);
+		
+		champ1=new Champignon(800, 263);
+		champ2=new Champignon(1100, 263);
+		champ3=new Champignon(2200, 263);
+		champ4=new Champignon(2400, 263);
+		champ5=new Champignon(3200, 263);
+		champ6=new Champignon(3500, 263);
+		champ7=new Champignon(3700, 263);
+		champ8=new Champignon(4500, 263);
+		
+		tortue1=new Tortue(950,243);
+		tortue2=new Tortue(1500,243);
+		tortue3=new Tortue(1800,243);
+		tortue4=new Tortue(2400,243);
+		tortue5=new Tortue(3100,243);
+		tortue6=new Tortue(3600,243);
+		tortue7=new Tortue(3900,243);
+		tortue8=new Tortue(4200,243);
+		tortue9=new Tortue(4400,243);
+		
+		icoDrapeaufin = new ImageIcon(getClass().getResource("/pictures/drapeau.png"));
+		this.imgDrapeaufin = this.icoDrapeaufin.getImage();
+		icoChateauFin = new ImageIcon(getClass().getResource("/pictures/chateauFin.png"));
+		this.imgChateauFin = this.icoChateauFin.getImage();
+		
+		
+		Tableaux_des_objets = new ArrayList<Objet>();
+		
+		Tableaux_des_objets.add(tuyau1);
+		Tableaux_des_objets.add(tuyau2);
+		Tableaux_des_objets.add(tuyau3);
+		Tableaux_des_objets.add(tuyau4);
+		Tableaux_des_objets.add(tuyau5);
+		Tableaux_des_objets.add(tuyau6);
+		Tableaux_des_objets.add(tuyau7);
+		Tableaux_des_objets.add(tuyau8);
+		
+		Tableaux_des_objets.add(bloc1);
+		Tableaux_des_objets.add(bloc2);
+		Tableaux_des_objets.add(bloc3);
+		Tableaux_des_objets.add(bloc4);
+		Tableaux_des_objets.add(bloc5);
+		Tableaux_des_objets.add(bloc6);
+		Tableaux_des_objets.add(bloc7);
+		Tableaux_des_objets.add(bloc8);
+		Tableaux_des_objets.add(bloc9);
+		Tableaux_des_objets.add(bloc10);
+		Tableaux_des_objets.add(bloc11);
+		Tableaux_des_objets.add(bloc12);
+		
+		Tableaux_des_pieces = new ArrayList<Piece>();
+		
+		Tableaux_des_pieces.add(piece1);
+		Tableaux_des_pieces.add(piece2);
+		Tableaux_des_pieces.add(piece3);
+		Tableaux_des_pieces.add(piece4);
+		Tableaux_des_pieces.add(piece5);
+		Tableaux_des_pieces.add(piece6);
+		Tableaux_des_pieces.add(piece7);
+		Tableaux_des_pieces.add(piece8);
+		Tableaux_des_pieces.add(piece9);
+		Tableaux_des_pieces.add(piece10);
+		
+		TabChamps = new ArrayList<Champignon>();
+		
+		TabChamps.add(champ1);
+		TabChamps.add(champ2);
+		TabChamps.add(champ3);
+		TabChamps.add(champ4);
+		TabChamps.add(champ5);
+		TabChamps.add(champ6);
+		TabChamps.add(champ7);
+		TabChamps.add(champ8);
+		
+		TabTortues = new ArrayList<Tortue>();
+		
+		TabTortues.add(tortue1);
+		TabTortues.add(tortue2);
+		TabTortues.add(tortue3);
+		TabTortues.add(tortue4);
+		TabTortues.add(tortue5);
+		TabTortues.add(tortue6);
+		TabTortues.add(tortue7);
+		TabTortues.add(tortue8);
+		TabTortues.add(tortue9);
+		
+		this.setFocusable(true);
+		this.requestFocusInWindow();
+		this.addKeyListener(new DeplacementClavier()); 
+
+		score = new Score();
+		police = new Font("Arial", Font.PLAIN, 18);
+		compte = new CompteARebours();
+		
+		Thread chronoEcran = new Thread(new Chrono());
+		chronoEcran.start();
+	}
+	
+	
+	
+	
+	
+	private boolean PartieGagnee() {
+		if(this.compte.getCompteurTemps() > 0 && this.mario_la_panthère.isVivant() == true
+			&& this.score.getNbrePieces() == 10 && this.xposition > 4400) {return true;}
+		else return false;
+	}
+	
+	private boolean PartiePerdue() {
+		if(this.compte.getCompteurTemps() <= 0 || this.mario_la_panthère.isVivant() == false) {return true;}
+		else return false;
+	}
+	
+	private boolean FinDePartie() {
+	  if(this.PartieGagnee()==true || this.PartiePerdue()==true) {
+		  return true;
+	  }	
+	  else return false;
+	}
+	
+	
+	
+
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Graphics g2 = (Graphics2D) g;
+		
+		//detection contact avec les objets
+		for(int i=0;i<Tableaux_des_objets.size();i++) {
+			if(this.mario_la_panthère.proche(this.Tableaux_des_objets.get(i)))
+			{this.mario_la_panthère.contact(this.Tableaux_des_objets.get(i));}
+			
+			//champignons
+			for(int j=0;j<TabChamps.size();j++) {
+				if(this.TabChamps.get(j).proche(this.Tableaux_des_objets.get(i)))
+				{this.TabChamps.get(j).contact(this.Tableaux_des_objets.get(i));}
+			}
+			
+			//tortues
+			for(int j=0;j<TabTortues.size();j++) {
+				if(this.TabTortues.get(j).proche(this.Tableaux_des_objets.get(i)))
+				{this.TabTortues.get(j).contact(this.Tableaux_des_objets.get(i));}
+			}
+			
+			
+		}
+		
+		//detection des contacts avec les pièces
+		for(int i=0;i<Tableaux_des_pieces.size();i++) {
+			if(this.mario_la_panthère.proche(this.Tableaux_des_pieces.get(i)))
+			{
+			if(this.mario_la_panthère.ContactPiece(this.Tableaux_des_pieces.get(i)))
+				this.Tableaux_des_pieces.remove(i);
+			    this.score.setNbrePieces(this.score.getNbrePieces() + 1);
+			}
+			
+		}
+		
+		//Detection des contacts des champignons avec les personnages(hors Mario)
+		
+		for(int i=0;i<TabChamps.size();i++) {
+			//champignons
+			for(int j=0;j<TabChamps.size();j++) {
+				if(j!=i) {
+					if(this.TabChamps.get(j).proche(this.TabChamps.get(i)))
+					{this.TabChamps.get(j).contact(this.TabChamps.get(i));}
+				}
+			}
+			//tortues
+			for(int j=0;j<TabTortues.size();j++) {
+					if(this.TabTortues.get(j).proche(this.TabChamps.get(i)))
+					{this.TabTortues.get(j).contact(this.TabChamps.get(i));}
+			}
+		}
+		
+		//Detection des contacts des tortues avec les personnages(hors Mario)
+		
+				for(int i=0;i<TabTortues.size();i++) {
+					//tortues
+					for(int j=0;j<TabTortues.size();j++) {
+						if(j!=i) {
+							if(this.TabTortues.get(j).proche(this.TabTortues.get(i)))
+							{this.TabTortues.get(j).contact(this.TabTortues.get(i));}
+						}
+					}
+					//champignons
+					for(int j=0;j<TabChamps.size();j++) {
+							if(this.TabChamps.get(j).proche(this.TabTortues.get(i)))
+							{this.TabChamps.get(j).contact(this.TabTortues.get(i));}
+					}
+				}
+		//Detection des contacts avec les personnages
+			//champignons	
+		for(int i=0;i<TabChamps.size();i++) {
+			if(this.mario_la_panthère.proche(this.TabChamps.get(i)) && this.TabChamps.get(i).isVivant() ==true) {this.mario_la_panthère.contact(this.TabChamps.get(i));}
+		}
+			//ortues	
+		for(int i=0;i<TabTortues.size();i++) {
+			if(this.mario_la_panthère.proche(this.TabTortues.get(i)) && this.TabTortues.get(i).isVivant() ==true) {this.mario_la_panthère.contact(this.TabTortues.get(i));}
+		}
+		
+		
+		//déplacement des objets "fixes" du jeu
+		this.deplacementFond();
+		if(this.xposition >= 0 && this.xposition <+ 4430) {
+		for(int i=0;i<Tableaux_des_objets.size();i++) {Tableaux_des_objets.get(i).deplacement();}
+		for(int i=0;i<Tableaux_des_pieces.size();i++) {Tableaux_des_pieces.get(i).deplacement();}
+		for(int i=0;i<TabChamps.size();i++) {TabChamps.get(i).deplacement();}
+		for(int i=0;i<TabTortues.size();i++) {TabTortues.get(i).deplacement();}
+		}
+		//image de fond
+		g2.drawImage(this.imgFond1, this.xfond1, 0, null);
+		g2.drawImage(this.imgFond2, this.xfond2, 0, null);
+		//image du chateau de départ
+		g2.drawImage(imgChateau1, 10 - xposition, 95, null);
+		//image du panneau de départ
+		g2.drawImage(imgDepart, 220 - xposition, 234, null);
+		//images des objets
+		for(int i=0; i<Tableaux_des_objets.size();i++) {
+		   g2.drawImage(Tableaux_des_objets.get(i).getImgObjet(), Tableaux_des_objets.get(i).getX(), Tableaux_des_objets.get(i).getY(), null);
+		}
+		//images des pièces  
+		for(int i=0; i<Tableaux_des_pieces.size();i++) {
+		   g2.drawImage(Tableaux_des_pieces.get(i).getImgObjet(), Tableaux_des_pieces.get(i).getX(), Tableaux_des_pieces.get(i).getY(), null);
+		}
+		//image du drapeau de fin 
+		g2.drawImage(imgDrapeaufin, 4650 - xposition, 115, null);
+		//image du chateau de fin
+		g2.drawImage(imgChateauFin, 5000 - xposition, 145, null);
+		
+		//image de mario
+		if(this.mario_la_panthère.isVivant() == true) {
+		if(this.mario_la_panthère.isSaut() == true) {g2.drawImage(this.mario_la_panthère.sauter(), this.mario_la_panthère.getX(), this.mario_la_panthère.getY(), null);}
+		else {g2.drawImage(this.mario_la_panthère.marche("mario", 25), mario_la_panthère.getX(), mario_la_panthère.getY(), null);}
+		}
+		else {
+			g2.drawImage(this.mario_la_panthère.meurt(), mario_la_panthère.getX(), mario_la_panthère.getY(), null);
+		}
+		//images des champignons
+		for(int i=0; i<TabChamps.size();i++) {
+			if(this.TabChamps.get(i).isVivant() == true) {
+			    g2.drawImage(this.TabChamps.get(i).marche("champ", 45), this.TabChamps.get(i).getX(), this.TabChamps.get(i).getY(), null);
+			}
+			else {
+				g2.drawImage(this.TabChamps.get(i).meurt(), this.TabChamps.get(i).getX(), this.TabChamps.get(i).getY() + 20, null);
+			}
+		}
+		//images des tortues
+		for(int i=0; i<TabTortues.size();i++) {
+			if(this.TabTortues.get(i).isVivant() == true) {
+			     g2.drawImage(this.TabTortues.get(i).marche("tortue", 50), this.TabTortues.get(i).getX(), this.TabTortues.get(i).getY(), null);
+			}
+			else {
+			     g2.drawImage(this.TabTortues.get(i).meurt(), this.TabTortues.get(i).getX(), this.TabTortues.get(i).getY() + 30, null);
+				}
+			}
+		
+		//mise à jour du score
+		g2.setFont(police);
+		g2.drawString("10 pièces à retrouver", 480, 25);
+		//mise à jour du temps
+		g2.drawString(this.compte.getStr(), 5, 25);
+		//Fin de la partie
+		if(this.FinDePartie() == true) {
+			Font PoliceFin = new Font("Arial",Font.BOLD,50);
+			g2.setFont(PoliceFin);
+			if(this.PartieGagnee() == true) {g2.drawString("Vous avez gagné !!!", 120, 180);}
+			else if (this.PartieGagnee() == false) { g2.drawString("Vous avez perdu :( :'( :(", 100, 180);}
+		}
+		
+		
+	}
+
+  	// Méthodes pour le déplacement du fond
+
+	public void deplacementFond() {
+
+		if (this.xposition >= 0 && this.xposition <= 4430) {
+			this.xposition += this.dx;
+			this.xfond1 -= this.dx;
+			this.xfond2 -= this.dx;
+		}
+		//Permanence du fond
+		if (this.xfond1 == -800)
+			this.xfond1 = 800;
+		else if (this.xfond2 == -800)
+			this.xfond2 = 800;
+		else if (this.xfond1 == 800)
+			this.xfond1 = -800;
+		else if (this.xfond2 == 800)
+			this.xfond2 = -800;
+	}
+	// Getter et setter 
+
+	public int getDx() {return dx;}
+	public void setDx(int dx) {this.dx = dx;}
+	public int getXposition() {return xposition;}
+	public void setXposition(int xposition) {this.xposition = xposition;}
+	public int getXfond1() {return xfond1;}
+	public void setXfond1(int xfond1) {this.xfond1 = xfond1;}
+	public int getXfond2() {return xfond2;}
+	public void setXfond2(int xfond2) {this.xfond2 = xfond2;}
+	public Mario getMario_la_panthère() {return mario_la_panthère;}
+	public void setMario_la_panthère(Mario mario_la_panthère) {this.mario_la_panthère = mario_la_panthère;} 
+	public int getYsol() {return ysol;}
+	public void setYsol(int ysol) {this.ysol = ysol;}
+	public int getHauteurPlafond() {return hauteurPlafond;}
+	public void setHauteurPlafond(int hauteurPlafond) {this.hauteurPlafond = hauteurPlafond;}
+
+	
+	
+	
+	
+
+}

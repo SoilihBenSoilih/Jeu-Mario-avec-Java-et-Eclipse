@@ -1,0 +1,18 @@
+package PackageObjets;
+
+import javax.swing.ImageIcon;
+
+public class Piece extends Objet{
+
+	
+	//***Constructeur***//
+	
+	public Piece(int x, int y) {
+		super(x, y, 30, 30);
+		
+		super.icoObjet = new ImageIcon(getClass().getResource("/pictures/piece1.png"));
+		super.imgObjet = super.icoObjet.getImage();
+		
+	}
+
+}

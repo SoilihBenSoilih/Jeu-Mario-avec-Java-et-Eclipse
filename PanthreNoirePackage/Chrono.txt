@@ -1,0 +1,18 @@
+package PanthreNoirePackage;
+
+public class Chrono implements Runnable {
+
+	private final int PAUSE = 3; // temps d'attente entre deux tours de boucles
+
+	@Override
+	public void run() {
+		while (true) {
+			ClassePrincipale.scene.repaint();// appel à la méthode PainComponent dans la classe scene
+			try {
+				Thread.sleep(PAUSE);
+			} catch (InterruptedException e) {
+			}
+		}
+	}
+
+}

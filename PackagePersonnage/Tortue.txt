@@ -1,0 +1,93 @@
+package PackagePersonnage;
+
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
+
+import PackageObjets.Objet;
+
+public class Tortue extends Personnage implements Runnable{
+
+	private Image ImgTortue;
+	private ImageIcon IcoTortue;
+	
+	private final int PAUSE=15; //temps d'attente en ms entre deux tours de boucles
+	private int dxTortue; //pas  de déplacement de la tortue
+	
+	//***Constructeur***//
+	
+		public Tortue(int x, int y) {
+			super(x, y, 43, 50);
+			super.setPersonnage_tournE_vers_la_droite(true);
+			super.setPersonnage_en_marche(true);
+			this.dxTortue = 1;
+			
+			this.IcoTortue = new ImageIcon(getClass().getResource("/pictures/tortueArretGauche.png"));
+			this.ImgTortue = IcoTortue.getImage();
+			
+			Thread ChronoChamp = new Thread(this);
+	    	ChronoChamp.start();
+		}
+
+		//Getters et Setters
+		public Image getImgTortue() {return ImgTortue;}
+		public void setImgTortue(Image imgTortue) {ImgTortue = imgTortue;}
+
+		
+		//***Methodes***//
+		
+		public void Bouge() {
+			if(super.isPersonnage_tournE_vers_la_droite() == true) {this.dxTortue =1;}
+			else this.dxTortue = -1;
+			super.setX(super.getX() + this.dxTortue); 
+		}
+		
+		public void run() {
+			try {Thread.sleep(20);}
+			catch(InterruptedException e){}
+			
+			while(true) { //boucle infinie
+				if(this.vivant == true) {
+				this.Bouge();
+				try{Thread.sleep(PAUSE);}
+				catch(InterruptedException e){}
+				} 
+			}
+		}
+		
+		public void contact(Objet objet) {
+			if (super.contactAvant(objet) == true && this.isPersonnage_tournE_vers_la_droite() == true){
+				super.setPersonnage_tournE_vers_la_droite(false);
+				this.dxTortue = -1;
+			}
+			 else if(super.contactArriere(objet) == true && this.isPersonnage_tournE_vers_la_droite() == false) {
+					super.setPersonnage_tournE_vers_la_droite(true);
+					this.dxTortue = 1;
+
+			}
+		}
+		
+		public void contact(Personnage personnage) {
+			if (super.contactAvant(personnage) == true && this.isPersonnage_tournE_vers_la_droite() == true){
+				super.setPersonnage_tournE_vers_la_droite(false);
+				this.dxTortue = -1;
+			}
+			 else if(super.contactArriere(personnage) == true && this.isPersonnage_tournE_vers_la_droite() == false) {
+					super.setPersonnage_tournE_vers_la_droite(true);
+					this.dxTortue = 1;
+
+			}
+		}
+		
+		public Image meurt() {
+			
+			String str;
+			Image img;
+			ImageIcon ico;
+	
+			str ="/pictures/tortueFermee.png";
+			ico = new ImageIcon(getClass().getResource(str));
+			img = ico.getImage();
+			return img;
+		}
+}

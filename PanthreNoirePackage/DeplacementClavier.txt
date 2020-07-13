@@ -1,0 +1,57 @@
+package PanthreNoirePackage;
+
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+public class DeplacementClavier implements KeyListener{
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		
+		if(ClassePrincipale.scene.getMario_la_panthère().isVivant() == true) {
+			
+		if(e.getKeyCode()==KeyEvent.VK_RIGHT) {//flèche droite
+			
+			if(ClassePrincipale.scene.getXposition()==-1) {
+				
+				ClassePrincipale.scene.setXposition(0);//reinitialition de Xposition
+				ClassePrincipale.scene.setXfond1(-50);//reinitialition de Xfond1
+				ClassePrincipale.scene.setXfond2(750);//reinitialition de Xfond2
+			}
+			ClassePrincipale.scene.getMario_la_panthère().setPersonnage_en_marche(true);
+			ClassePrincipale.scene.getMario_la_panthère().setPersonnage_tournE_vers_la_droite(true);
+			ClassePrincipale.scene.setDx(1);//Déplacement du fond vers la gauche
+		}
+		else if(e.getKeyCode()==KeyEvent.VK_LEFT) {//flèche gauche
+			
+			if(ClassePrincipale.scene.getXposition() == 4431) {
+				ClassePrincipale.scene.setXposition(4430);
+				ClassePrincipale.scene.setXfond1(-50);
+				ClassePrincipale.scene.setXfond2(750);
+			}
+			
+			ClassePrincipale.scene.getMario_la_panthère().setPersonnage_en_marche(true);
+			ClassePrincipale.scene.getMario_la_panthère().setPersonnage_tournE_vers_la_droite(false);
+			ClassePrincipale.scene.setDx(-1);//Déplacement vers la gauche
+		}
+		
+		if(e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_UP) {
+			ClassePrincipale.scene.getMario_la_panthère().setSaut(true);
+		}
+		}
+	  }
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		ClassePrincipale.scene.getMario_la_panthère().setPersonnage_en_marche(false);
+		ClassePrincipale.scene.setDx(0);/*Remise à zéro de la variable dx
+		 								Pour que Mario se déplace pas quand
+		 								on relâche les boutons*/
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub	
+	}
+
+}

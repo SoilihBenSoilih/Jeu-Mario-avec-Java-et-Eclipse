@@ -1,0 +1,38 @@
+package PackageAffichage;
+
+public class CompteARebours implements Runnable{
+
+	
+	private final int PAUSE=1000;
+	private int CompteurTemps;
+	private String str;
+	
+	public CompteARebours() {
+		this.CompteurTemps = 200;
+		this.str="Temps restant: 200";
+		
+		Thread compteARebours = new Thread(this);
+		compteARebours.start();
+	}
+
+	@Override
+	public void run() {
+		while(true) {
+			try {Thread.sleep(PAUSE);}
+			catch(InterruptedException e) {}
+			this.CompteurTemps--;
+			this.str="Temps restant: " + this.CompteurTemps;
+		}
+		
+	}
+
+	public int getCompteurTemps() {
+		return CompteurTemps;
+	}
+
+	public String getStr() {
+		return str;
+	}
+	
+	
+}
